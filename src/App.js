@@ -1,13 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+import useTitle from "./useTitle";
 
 function App() {
+  const [count, setCount] = useState(0);
+
+  useTitle(`You clicked ${count} times.`);
+
   return (
-    <>
-      <h1>Hello World</h1>
-      <p>This is my first React component</p>
-    </>
+    <div>
+      <p>Counter = {count}</p>
+      <button onClick={ () => setCount(count + 1) }>
+        증가
+      </button>
+    </div>
   );
-}
+};
 
 export default App;

@@ -1,17 +1,15 @@
 import "./App.css";
-import React, { useState } from "react";
-import useTitle from "./useTitle";
+import React from "react";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  useTitle(`You clicked ${count} times.`);
+  const buttonPressed = ()=>{
+    alert('Button pressed');
+  }
 
   return (
     <div>
-      <p>Counter = {count}</p>
-      <button onClick={ () => setCount(count + 1) }>
-        증가
+      <button onClick={buttonPressed}>
+        버튼 누르기
       </button>
     </div>
   );

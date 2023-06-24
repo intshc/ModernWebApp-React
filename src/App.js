@@ -1,40 +1,39 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 function App() {
-  const [temp, setTemp] = useState("");
-  const [desc, setDesc] = useState("");
-  const [icon, setIcon] = useState("");
-  const [isReady, setReady] = useState("");
 
-  const apikey= process.env.WEATHER_APIKEY;
-  React.useEffect(()=>{
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Seoul&APPID=${apikey}&units=metric`)
-    .then(result => result.json())
-    .then(jsonresult =>{
-      setTemp(jsonresult.main.temp);
-      setDesc(jsonresult.weather[0].main);
-      setIcon(jsonresult.weather[0].icon);
-      setReady(true);
-    })
-    .catch(err => console.error(err))
-  }, [])
+  const [keyword, setKeyword] = useState('');
+  const [data, setData] = useState([]);
 
-  if(isReady){
-    return (
-      <div className="App">
-          <p>온도: {temp}</p>
-          <p>상태: {desc}</p>
-          <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
-            alt="Weather icon"></img>
-      </div>
-    );
+  const fetchData = () => {
+    //rest api 호출
+    fetch(`https://api.github.com/search/repositories?q=${keyword}`)
+            .then(response => response.json())
+            .then(data => setData(data.items))
+            .catch(err => console.error(err))
   }
-  else{
-    return(
-      <div>Loading...</div>
-    )
-  }
+
+  return (
+          <div className="App">
+            <input value={keyword} onChange={e => setKeyword(e.target.value)} />
+            <button onClick={fetchData}>Fetch</button>
+            <table>
+              <tbody>
+              {
+                data.map(repo =>
+                <tr key={repo.id}>
+                  <td>{repo.full_name}</td>
+                  <td>
+                    <a href={repo.html_url}>{repo.html_url}</a>
+                  </td>
+                </tr>
+                )
+              }
+              </tbody>
+            </table>
+          </div>
+  );
 }
 
 export default App;
